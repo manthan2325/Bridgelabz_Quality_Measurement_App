@@ -2,7 +2,7 @@
 /*
  * Class Name  : QuantityLength
  * Description : Represents length measurements and supports
- *               equality and unit conversion.
+ *               equality, unit conversion and addition.
  * Author      : Manthan Hanchate
  * Date        : 18/11/2026
  */
@@ -113,8 +113,8 @@ public class QuantityLength {
     }
 
     /**
-     * Adds another length measurement and returns the result
-     * in the unit of this measurement.
+     * Adds another measurement using this object's unit.
+     * Preserves UC6 backward compatibility.
      *
      * @param other measurement to add
      * @return new QuantityLength containing the sum
@@ -124,10 +124,10 @@ public class QuantityLength {
     }
 
     /**
-     * Adds another length measurement in the specified unit.
+     * Adds another measurement using the specified target unit.
      *
      * @param other measurement to add
-     * @param targetUnit unit for the result
+     * @param targetUnit result unit
      * @return new QuantityLength containing the sum
      */
     public QuantityLength add(
@@ -138,12 +138,12 @@ public class QuantityLength {
     }
 
     /**
-     * Adds two length measurements and returns the result
-     * in the specified target unit.
+     * Adds two measurements and returns the result
+     * in the explicitly specified target unit.
      *
      * @param length1 first measurement
      * @param length2 second measurement
-     * @param targetUnit unit for the result
+     * @param targetUnit result unit
      * @return new QuantityLength containing the sum
      */
     public static QuantityLength add(
@@ -156,38 +156,16 @@ public class QuantityLength {
                     "Measurements cannot be null");
         }
 
-        Objects.requireNonNull(
-                targetUnit, "Target unit cannot be null");
-
-        if (!Double.isFinite(length1.value)
-                || !Double.isFinite(length2.value)) {
+        if (targetUnit == null) {
             throw new IllegalArgumentException(
-                    "Measurements must be finite");
+                    "Target unit cannot be null");
         }
 
-        double firstInFeet = length1.convertToFeet();
-        double secondInFeet = length2.convertToFeet();
-
-        double sumInFeet = firstInFeet + secondInFeet;
-
-        if (!Double.isFinite(sumInFeet)) {
-            throw new ArithmeticException(
-                    "Addition result is out of range");
-        }
-
-        double result = sumInFeet
-                / targetUnit.getConversionFactor();
-
-        if (!Double.isFinite(result)) {
-            throw new ArithmeticException(
-                    "Converted addition result is out of range");
-        }
-
-        return new QuantityLength(result, targetUnit);
+        return addInTargetUnit(length1, length2, targetUnit);
     }
 
     /**
-     * Adds two raw length values using their respective units.
+     * Adds raw measurement values using their respective units.
      *
      * @param value1 first measurement value
      * @param unit1 first measurement unit
@@ -212,4 +190,38 @@ public class QuantityLength {
         return add(length1, length2, targetUnit);
     }
 
+    /**
+     * Internal utility that performs addition after
+     * converting both measurements into the base unit (feet).
+     *
+     * @param length1 first measurement
+     * @param length2 second measurement
+     * @param targetUnit result unit
+     * @return new QuantityLength in the target unit
+     */
+    private static QuantityLength addInTargetUnit(
+            QuantityLength length1,
+            QuantityLength length2,
+            LengthUnit targetUnit) {
+
+        double firstInFeet = length1.convertToFeet();
+        double secondInFeet = length2.convertToFeet();
+
+        double sumInFeet = firstInFeet + secondInFeet;
+
+        if (!Double.isFinite(sumInFeet)) {
+            throw new ArithmeticException(
+                    "Addition result is out of range");
+        }
+
+        double result = sumInFeet
+                / targetUnit.getConversionFactor();
+
+        if (!Double.isFinite(result)) {
+            throw new ArithmeticException(
+                    "Converted result is out of range");
+        }
+
+        return new QuantityLength(result, targetUnit);
+    }
 }
