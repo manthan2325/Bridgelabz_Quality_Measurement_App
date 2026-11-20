@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="36500bfa-2470-4274-b455-a846eb226d94" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;manthan2325&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/manthan2325/Bridgelabz_Quality_Measurement_App.git&quot;,
+    &quot;accountId&quot;: &quot;38059dd5-41fe-491e-a1a2-2db0ff30b6ad&quot;
+  }
+}</component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.0010130382299758" />
+      <entry key="MS500" value="2.0396375902606096" />
+      <entry key="S2" value="7.64784788589387" />
+      <entry key="S5" value="11.307551568753976" />
+      <entry key="S10" value="13.010043874932093" />
+      <entry key="S30" value="16.53681869631503" />
+      <entry key="S60" value="29.05478968711704" />
+      <entry key="M2" value="63.48194420273651" />
+      <entry key="M5" value="126.95567307092777" />
+      <entry key="M10" value="165.23168997775846" />
+      <entry key="M15" value="180.96385844481566" />
+      <entry key="M30" value="198.4822669888512" />
+      <entry key="H1" value="207.97691384834908" />
+      <entry key="H2" value="212.9205219867985" />
+      <entry key="H4" value="215.44303624729773" />
+      <entry key="D1" value="217.5714263066795" />
+      <entry key="W1" value="217.93871581870889" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="9.149689326851908E-282" />
+      <entry key="MS500" value="6.198423843048E-57" />
+      <entry key="S2" value="8.872996646978358E-15" />
+      <entry key="S5" value="2.3945732517947752E-6" />
+      <entry key="S10" value="0.0015474537407832766" />
+      <entry key="S30" value="0.11938506951658909" />
+      <entry key="S60" value="0.4263427663442901" />
+      <entry key="M2" value="0.9984978683257516" />
+      <entry key="M5" value="1.8724967376314812" />
+      <entry key="M10" value="2.3582553346926023" />
+      <entry key="M15" value="2.55247019809135" />
+      <entry key="M30" value="2.7657139449463095" />
+      <entry key="H1" value="2.8800925529150874" />
+      <entry key="H2" value="2.939337637267811" />
+      <entry key="H4" value="2.969489417156374" />
+      <entry key="D1" value="2.9948897933547887" />
+      <entry key="W1" value="2.999269353024604" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="0.18770594995490314" />
+      <entry key="MS500" value="1.715629771084225" />
+      <entry key="S2" value="7.518048386209353" />
+      <entry key="S5" value="11.245811227438837" />
+      <entry key="S10" value="12.978447283388318" />
+      <entry key="S30" value="16.638217617897862" />
+      <entry key="S60" value="29.455944111259612" />
+      <entry key="M2" value="64.4497861193948" />
+      <entry key="M5" value="128.80488549788734" />
+      <entry key="M10" value="167.5752938423513" />
+      <entry key="M15" value="183.50576475487074" />
+      <entry key="M30" value="201.24226352576747" />
+      <entry key="H1" value="210.85403123971932" />
+      <entry key="H2" value="215.85834192455704" />
+      <entry key="H4" value="218.41175915583455" />
+      <entry key="D1" value="220.56618727372856" />
+      <entry key="W1" value="220.93796674150585" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3MJpfzghYpzZ0oLRCGWhAng12TW" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/manthan/Documents/Bridgelabz_Java",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "onboarding.tips.debug.path": "/home/manthan/Documents/BL_SpringBootPratical/Bridgelabz_Quality_Measurement_App/src/main/java/org/example/Main.java",
+    "python.packages.toolwindow.project.migrated.to.right.top.v2": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-ac68fc9d2b05-intellij.indexing.shared.core-IU-263.7307.200" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="36500bfa-2470-4274-b455-a846eb226d94" name="Changes" comment="" />
+      <created>1795078636752</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1795078636752</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
