@@ -99,4 +99,69 @@ public class QuantityMeasurementApp {
         System.out.println("1 Inch = 1 Inch: "
                 + quantity3.equals(quantity4));
     }
+
+    /**
+     * Demonstrates conversion using raw measurement values.
+     */
+    public static double demonstrateLengthConversion(
+            double value,
+            LengthUnit sourceUnit,
+            LengthUnit targetUnit) {
+
+        double result = QuantityLength.convert(
+                value, sourceUnit, targetUnit);
+
+        System.out.println(value + " " + sourceUnit
+                + " = " + result + " " + targetUnit);
+
+        return result;
+    }
+
+    /**
+     * Demonstrates conversion using an existing QuantityLength object.
+     */
+    public static QuantityLength demonstrateLengthConversion(
+            QuantityLength quantity,
+            LengthUnit targetUnit) {
+
+        QuantityLength converted = quantity.convertTo(targetUnit);
+
+        System.out.println(quantity + " = " + converted);
+
+        return converted;
+    }
+
+    /**
+     * Demonstrates equality between two measurements.
+     */
+    public static boolean demonstrateLengthEquality(
+            QuantityLength quantity1,
+            QuantityLength quantity2) {
+
+        boolean result = quantity1.equals(quantity2);
+
+        System.out.println(quantity1 + " and " + quantity2
+                + " are equal: " + result);
+
+        return result;
+    }
+
+    /**
+     * Demonstrates conversion and comparison between measurements.
+     */
+    public static boolean demonstrateLengthComparison(
+            double value1,
+            LengthUnit unit1,
+            double value2,
+            LengthUnit unit2) {
+
+        QuantityLength quantity1 =
+                new QuantityLength(value1, unit1);
+
+        QuantityLength quantity2 =
+                new QuantityLength(value2, unit2);
+
+        return demonstrateLengthEquality(quantity1, quantity2);
+    }
+
 }
