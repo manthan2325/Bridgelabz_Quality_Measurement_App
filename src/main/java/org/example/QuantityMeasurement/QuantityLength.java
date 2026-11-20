@@ -34,7 +34,7 @@ public class QuantityLength {
     }
 
     private double convertToFeet() {
-        return value * unit.getConversionFactor();
+        return unit.convertToBaseUnit(value);
     }
 
     /**
@@ -47,6 +47,7 @@ public class QuantityLength {
      * @throws IllegalArgumentException if value is not finite
      * @throws NullPointerException if either unit is null
      */
+
     public static double convert(
             double value,
             LengthUnit sourceUnit,
@@ -59,11 +60,8 @@ public class QuantityLength {
         Objects.requireNonNull(sourceUnit, "Source unit cannot be null");
         Objects.requireNonNull(targetUnit, "Target unit cannot be null");
 
-        double valueInFeet =
-                value * sourceUnit.getConversionFactor();
-
-        double convertedValue =
-                valueInFeet / targetUnit.getConversionFactor();
+        double valueInBaseUnit = sourceUnit.convertToBaseUnit(value);
+        double convertedValue = targetUnit.convertFromBaseUnit(valueInBaseUnit);
 
         if (!Double.isFinite(convertedValue)) {
             throw new ArithmeticException("Conversion result is out of range");
@@ -71,7 +69,6 @@ public class QuantityLength {
 
         return convertedValue;
     }
-
     /**
      * Converts this measurement into the target unit.
      *

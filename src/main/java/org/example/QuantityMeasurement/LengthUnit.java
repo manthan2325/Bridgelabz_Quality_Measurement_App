@@ -1,15 +1,13 @@
 
 /*
  * Class Name  : LengthUnit
- * Description : Defines supported length units and conversion factors.
+ * Description : Defines length units and handles conversions
+ *               to and from the base unit (feet).
  * Author      : Manthan Hanchate
  * Date        : 18/11/2026
  */
-
 package org.example.QuantityMeasurement;
-
 public enum LengthUnit {
-
     FEET(1.0),
     INCHES(1.0 / 12.0),
     YARDS(3.0),
@@ -23,5 +21,13 @@ public enum LengthUnit {
 
     public double getConversionFactor() {
         return conversionFactor;
+    }
+
+    public double convertToBaseUnit(double value) {
+        return value * conversionFactor;
+    }
+
+    public double convertFromBaseUnit(double baseValue) {
+        return baseValue / conversionFactor;
     }
 }
