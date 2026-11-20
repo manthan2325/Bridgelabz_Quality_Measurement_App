@@ -164,4 +164,39 @@ public class QuantityMeasurementApp {
         return demonstrateLengthEquality(quantity1, quantity2);
     }
 
+    /**
+     * Demonstrates addition using QuantityLength objects.
+     */
+    public static QuantityLength demonstrateLengthAddition(
+            QuantityLength length1,
+            QuantityLength length2) {
+
+        QuantityLength result = length1.add(length2);
+
+        System.out.println(length1 + " + " + length2
+                + " = " + result);
+
+        return result;
+    }
+
+    /**
+     * Demonstrates addition using raw measurement values.
+     */
+    public static QuantityLength demonstrateLengthAddition(
+            double value1,
+            LengthUnit unit1,
+            double value2,
+            LengthUnit unit2,
+            LengthUnit targetUnit) {
+
+        QuantityLength result = QuantityLength.add(
+                value1, unit1, value2, unit2, targetUnit);
+
+        System.out.println(value1 + " " + unit1
+                + " + " + value2 + " " + unit2
+                + " = " + result);
+
+        return result;
+    }
+
 }

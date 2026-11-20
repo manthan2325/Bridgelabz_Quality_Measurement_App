@@ -111,4 +111,105 @@ public class QuantityLength {
     public String toString() {
         return value + " " + unit;
     }
+
+    /**
+     * Adds another length measurement and returns the result
+     * in the unit of this measurement.
+     *
+     * @param other measurement to add
+     * @return new QuantityLength containing the sum
+     */
+    public QuantityLength add(QuantityLength other) {
+        return add(this, other, this.unit);
+    }
+
+    /**
+     * Adds another length measurement in the specified unit.
+     *
+     * @param other measurement to add
+     * @param targetUnit unit for the result
+     * @return new QuantityLength containing the sum
+     */
+    public QuantityLength add(
+            QuantityLength other,
+            LengthUnit targetUnit) {
+
+        return add(this, other, targetUnit);
+    }
+
+    /**
+     * Adds two length measurements and returns the result
+     * in the specified target unit.
+     *
+     * @param length1 first measurement
+     * @param length2 second measurement
+     * @param targetUnit unit for the result
+     * @return new QuantityLength containing the sum
+     */
+    public static QuantityLength add(
+            QuantityLength length1,
+            QuantityLength length2,
+            LengthUnit targetUnit) {
+
+        if (length1 == null || length2 == null) {
+            throw new IllegalArgumentException(
+                    "Measurements cannot be null");
+        }
+
+        Objects.requireNonNull(
+                targetUnit, "Target unit cannot be null");
+
+        if (!Double.isFinite(length1.value)
+                || !Double.isFinite(length2.value)) {
+            throw new IllegalArgumentException(
+                    "Measurements must be finite");
+        }
+
+        double firstInFeet = length1.convertToFeet();
+        double secondInFeet = length2.convertToFeet();
+
+        double sumInFeet = firstInFeet + secondInFeet;
+
+        if (!Double.isFinite(sumInFeet)) {
+            throw new ArithmeticException(
+                    "Addition result is out of range");
+        }
+
+        double result = sumInFeet
+                / targetUnit.getConversionFactor();
+
+        if (!Double.isFinite(result)) {
+            throw new ArithmeticException(
+                    "Converted addition result is out of range");
+        }
+
+        return new QuantityLength(result, targetUnit);
+    }
+
+    /**
+     * Adds two raw length values using their respective units.
+     *
+     * @param value1 first measurement value
+     * @param unit1 first measurement unit
+     * @param value2 second measurement value
+     * @param unit2 second measurement unit
+     * @param targetUnit result unit
+     * @return new QuantityLength containing the sum
+     */
+    public static QuantityLength add(
+            double value1,
+            LengthUnit unit1,
+            double value2,
+            LengthUnit unit2,
+            LengthUnit targetUnit) {
+
+        QuantityLength length1 =
+                new QuantityLength(value1, unit1);
+
+        QuantityLength length2 =
+                new QuantityLength(value2, unit2);
+
+        return add(length1, length2, targetUnit);
+    }
+
 }
