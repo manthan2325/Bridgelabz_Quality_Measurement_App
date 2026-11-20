@@ -2,7 +2,7 @@
 /*
  * Class Name  : QuantityMeasurementAppTest
  * Description : Unit tests for UC1, UC2 and UC3.
- * Author      : Utkarsh Jain
+ * Author      : Manthan Hanchate
  * Date        : 18/11/2026
  */
 
