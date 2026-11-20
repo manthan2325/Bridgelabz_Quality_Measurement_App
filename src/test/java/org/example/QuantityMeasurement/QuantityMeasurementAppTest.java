@@ -908,4 +908,93 @@ class QuantityMeasurementAppTest {
                         first, null, LengthUnit.FEET));
     }
 
+    @Test
+    void testLengthUnitEnum_FeetConstant() {
+        assertEquals(1.0, LengthUnit.FEET.getConversionFactor());
+    }
+
+    @Test
+    void testLengthUnitEnum_InchesConstant() {
+        assertEquals(1.0 / 12.0, LengthUnit.INCHES.getConversionFactor());
+    }
+
+    @Test
+    void testLengthUnitEnum_YardsConstant() {
+        assertEquals(3.0, LengthUnit.YARDS.getConversionFactor());
+    }
+
+    @Test
+    void testLengthUnitEnum_CentimetersConstant() {
+        assertEquals(
+                0.393701 / 12.0,
+                LengthUnit.CENTIMETERS.getConversionFactor()
+        );
+    }
+
+    @Test
+    void testConvertToBaseUnit() {
+        assertEquals(5.0, LengthUnit.FEET.convertToBaseUnit(5.0));
+        assertEquals(1.0, LengthUnit.INCHES.convertToBaseUnit(12.0));
+        assertEquals(3.0, LengthUnit.YARDS.convertToBaseUnit(1.0));
+        assertEquals(1.0, LengthUnit.CENTIMETERS.convertToBaseUnit(30.48), 0.0001);
+    }
+
+    @Test
+    void testConvertFromBaseUnit() {
+        assertEquals(2.0, LengthUnit.FEET.convertFromBaseUnit(2.0));
+        assertEquals(12.0, LengthUnit.INCHES.convertFromBaseUnit(1.0));
+        assertEquals(1.0, LengthUnit.YARDS.convertFromBaseUnit(3.0));
+        assertEquals(30.48, LengthUnit.CENTIMETERS.convertFromBaseUnit(1.0), 0.0001);
+    }
+
+    @Test
+    void testRefactoredEquality() {
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches = new QuantityLength(12.0, LengthUnit.INCHES);
+
+        assertEquals(feet, inches);
+    }
+
+    @Test
+    void testRefactoredConversion() {
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+
+        QuantityLength result = feet.convertTo(LengthUnit.INCHES);
+
+        assertEquals(12.0, result.getValue(), 0.0001);
+        assertEquals(LengthUnit.INCHES, result.getUnit());
+    }
+
+    @Test
+    void testRefactoredAddition() {
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches = new QuantityLength(12.0, LengthUnit.INCHES);
+
+        QuantityLength result = feet.add(inches, LengthUnit.FEET);
+
+        assertEquals(2.0, result.getValue(), 0.0001);
+        assertEquals(LengthUnit.FEET, result.getUnit());
+    }
+
+    @Test
+    void testRefactoredAdditionWithTargetUnit() {
+        QuantityLength feet = new QuantityLength(1.0, LengthUnit.FEET);
+        QuantityLength inches = new QuantityLength(12.0, LengthUnit.INCHES);
+
+        QuantityLength result = feet.add(inches, LengthUnit.YARDS);
+
+        assertEquals(2.0 / 3.0, result.getValue(), 0.0001);
+        assertEquals(LengthUnit.YARDS, result.getUnit());
+    }
+
+    @Test
+    void testCentimetersToInches() {
+        QuantityLength centimeters =
+                new QuantityLength(2.54, LengthUnit.CENTIMETERS);
+
+        QuantityLength result = centimeters.convertTo(LengthUnit.INCHES);
+
+        assertEquals(1.0, result.getValue(), 0.0001);
+    }
+
 }
