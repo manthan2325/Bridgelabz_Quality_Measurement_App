@@ -1,13 +1,14 @@
 
 /*
  * Class Name  : LengthUnit
- * Description : Defines length units and handles conversions
- *               to and from the base unit (feet).
+ * Description : Defines length units and their conversions.
  * Author      : Manthan Hanchate
- * Date        : 18/11/2026
+ * Date        : 19/11/2026
  */
 package org.example.QuantityMeasurement;
-public enum LengthUnit {
+
+public enum LengthUnit implements IMeasurable {
+
     FEET(1.0),
     INCHES(1.0 / 12.0),
     YARDS(3.0),
@@ -19,15 +20,23 @@ public enum LengthUnit {
         this.conversionFactor = conversionFactor;
     }
 
+    @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
 
+    @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
 
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
+    }
+
+    @Override
+    public String getUnitName() {
+        return name();
     }
 }

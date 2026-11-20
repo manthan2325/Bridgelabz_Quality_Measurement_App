@@ -1,202 +1,163 @@
 
 /*
  * Class Name  : QuantityMeasurementApp
- * Description : Demonstrates quantity equality using QuantityLength.
+ * Description : Demonstrates generic and legacy quantity operations.
  * Author      : Manthan Hanchate
- * Date        : 18/11/2026
+ * Date        : 19/11/2026
  */
-
 package org.example.QuantityMeasurement;
+
+import java.util.Objects;
 
 public class QuantityMeasurementApp {
 
-    public static class Feet {
-        private final QuantityLength quantity;
+    // UC10: Generic demonstration methods
 
-        public Feet(double value) {
-            quantity = new QuantityLength(value, LengthUnit.FEET);
-        }
+    public static boolean demonstrateEquality(
+            Quantity<?> quantity1,
+            Quantity<?> quantity2) {
 
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-
-            return quantity.equals(((Feet) obj).quantity);
-        }
-
-        @Override
-        public int hashCode() {
-            return quantity.hashCode();
-        }
+        return quantity1.equals(quantity2);
     }
 
-    public static class Inches {
-        private final QuantityLength quantity;
+    public static <U extends IMeasurable> Quantity<U> demonstrateConversion(
+            Quantity<U> quantity,
+            U targetUnit) {
 
-        public Inches(double value) {
-            quantity = new QuantityLength(value, LengthUnit.INCHES);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (this == obj) {
-                return true;
-            }
-
-            if (obj == null || getClass() != obj.getClass()) {
-                return false;
-            }
-
-            return quantity.equals(((Inches) obj).quantity);
-        }
-
-        @Override
-        public int hashCode() {
-            return quantity.hashCode();
-        }
+        return quantity.convertTo(targetUnit);
     }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateAddition(
+            Quantity<U> quantity1,
+            Quantity<U> quantity2,
+            U targetUnit) {
+
+        return quantity1.add(quantity2, targetUnit);
+    }
+
+    // UC1 and UC2: Legacy equality methods
 
     public static boolean areFeetEqual(double value1, double value2) {
-        return new QuantityLength(value1, LengthUnit.FEET)
-                .equals(new QuantityLength(value2, LengthUnit.FEET));
+        return Double.compare(value1, value2) == 0;
     }
 
     public static boolean areInchesEqual(double value1, double value2) {
-        return new QuantityLength(value1, LengthUnit.INCHES)
-                .equals(new QuantityLength(value2, LengthUnit.INCHES));
+        return Double.compare(value1, value2) == 0;
     }
 
     public static boolean areFeetAndInchesEqual(
-            double feet, double inches) {
+            double feetValue, double inchesValue) {
 
-        return new QuantityLength(feet, LengthUnit.FEET)
-                .equals(new QuantityLength(inches, LengthUnit.INCHES));
+        return Double.compare(
+                LengthUnit.FEET.convertToBaseUnit(feetValue),
+                LengthUnit.INCHES.convertToBaseUnit(inchesValue)
+        ) == 0;
     }
 
-    public static void main(String[] args) {
+    // UC5: Legacy length conversion and comparison methods
 
-        QuantityLength quantity1 =
-                new QuantityLength(1.0, LengthUnit.FEET);
-
-        QuantityLength quantity2 =
-                new QuantityLength(12.0, LengthUnit.INCHES);
-
-        QuantityLength quantity3 =
-                new QuantityLength(1.0, LengthUnit.INCHES);
-
-        QuantityLength quantity4 =
-                new QuantityLength(1.0, LengthUnit.INCHES);
-
-        System.out.println("1 Feet = 12 Inches: "
-                + quantity1.equals(quantity2));
-
-        System.out.println("1 Inch = 1 Inch: "
-                + quantity3.equals(quantity4));
-    }
-
-    /**
-     * Demonstrates conversion using raw measurement values.
-     */
     public static double demonstrateLengthConversion(
             double value,
             LengthUnit sourceUnit,
             LengthUnit targetUnit) {
 
-        double result = QuantityLength.convert(
-                value, sourceUnit, targetUnit);
-
-        System.out.println(value + " " + sourceUnit
-                + " = " + result + " " + targetUnit);
-
-        return result;
+        return QuantityLength.convert(value, sourceUnit, targetUnit);
     }
 
-    /**
-     * Demonstrates conversion using an existing QuantityLength object.
-     */
     public static QuantityLength demonstrateLengthConversion(
             QuantityLength quantity,
             LengthUnit targetUnit) {
 
-        QuantityLength converted = quantity.convertTo(targetUnit);
-
-        System.out.println(quantity + " = " + converted);
-
-        return converted;
+        return quantity.convertTo(targetUnit);
     }
 
-    /**
-     * Demonstrates equality between two measurements.
-     */
-    public static boolean demonstrateLengthEquality(
-            QuantityLength quantity1,
-            QuantityLength quantity2) {
-
-        boolean result = quantity1.equals(quantity2);
-
-        System.out.println(quantity1 + " and " + quantity2
-                + " are equal: " + result);
-
-        return result;
-    }
-
-    /**
-     * Demonstrates conversion and comparison between measurements.
-     */
     public static boolean demonstrateLengthComparison(
             double value1,
             LengthUnit unit1,
             double value2,
             LengthUnit unit2) {
 
-        QuantityLength quantity1 =
-                new QuantityLength(value1, unit1);
-
-        QuantityLength quantity2 =
-                new QuantityLength(value2, unit2);
-
-        return demonstrateLengthEquality(quantity1, quantity2);
+        return new QuantityLength(value1, unit1)
+                .equals(new QuantityLength(value2, unit2));
     }
 
-    /**
-     * Demonstrates addition using QuantityLength objects.
-     */
-    public static QuantityLength demonstrateLengthAddition(
-            QuantityLength length1,
-            QuantityLength length2) {
+    // UC1: Legacy Feet class
 
-        QuantityLength result = length1.add(length2);
+    public static class Feet {
 
-        System.out.println(length1 + " + " + length2
-                + " = " + result);
+        private final double value;
 
-        return result;
+        public Feet(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Feet feet = (Feet) obj;
+            return Double.compare(value, feet.value) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    /**
-     * Demonstrates addition using raw measurement values.
-     */
-    public static QuantityLength demonstrateLengthAddition(
-            double value1,
-            LengthUnit unit1,
-            double value2,
-            LengthUnit unit2,
-            LengthUnit targetUnit) {
+    // UC2: Legacy Inches class
 
-        QuantityLength result = QuantityLength.add(
-                value1, unit1, value2, unit2, targetUnit);
+    public static class Inches {
 
-        System.out.println(value1 + " " + unit1
-                + " + " + value2 + " " + unit2
-                + " = " + result);
+        private final double value;
 
-        return result;
+        public Inches(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) return true;
+            if (obj == null || getClass() != obj.getClass()) return false;
+
+            Inches inches = (Inches) obj;
+            return Double.compare(value, inches.value) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
+    public static void main(String[] args) {
+
+        Quantity<LengthUnit> feet =
+                new Quantity<>(1.0, LengthUnit.FEET);
+
+        Quantity<LengthUnit> inches =
+                new Quantity<>(12.0, LengthUnit.INCHES);
+
+        Quantity<WeightUnit> kilogram =
+                new Quantity<>(1.0, WeightUnit.KILOGRAM);
+
+        Quantity<WeightUnit> grams =
+                new Quantity<>(1000.0, WeightUnit.GRAM);
+
+        System.out.println("Length Operations:");
+        System.out.println("Equality: " + demonstrateEquality(feet, inches));
+        System.out.println("Conversion: "
+                + demonstrateConversion(feet, LengthUnit.INCHES));
+        System.out.println("Addition: "
+                + demonstrateAddition(feet, inches, LengthUnit.FEET));
+
+        System.out.println("\nWeight Operations:");
+        System.out.println("Equality: "
+                + demonstrateEquality(kilogram, grams));
+        System.out.println("Conversion: "
+                + demonstrateConversion(kilogram, WeightUnit.GRAM));
+        System.out.println("Addition: "
+                + demonstrateAddition(kilogram, grams, WeightUnit.KILOGRAM));
+    }
 }

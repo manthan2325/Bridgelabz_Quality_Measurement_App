@@ -11,7 +11,7 @@ package org.example.QuantityMeasurement;
 
 import java.util.Objects;
 
-public class QuantityLength {
+public class    QuantityLength {
 
     private final double value;
     private final LengthUnit unit;
