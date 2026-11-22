@@ -1,11 +1,11 @@
 
 /*
  * Class Name  : WeightUnit
+ * Description : Defines weight units and their conversions.
  * Author      : Manthan Hanchate
  * Date        : 19/11/2026
  */
 package org.example.QuantityMeasurement;
-
 
 public enum WeightUnit implements IMeasurable {
 
@@ -19,18 +19,17 @@ public enum WeightUnit implements IMeasurable {
         this.conversionFactor = conversionFactor;
     }
 
-
     @Override
     public double getConversionFactor() {
         return conversionFactor;
     }
-
 
     @Override
     public double convertToBaseUnit(double value) {
         return value * conversionFactor;
     }
 
+    @Override
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
     }
