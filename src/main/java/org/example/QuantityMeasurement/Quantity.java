@@ -3,7 +3,7 @@
  * Class Name  : Quantity
  * Description : Generic measurement class supporting equality,
  *               conversion, and addition for different unit categories.
- * Author      : Utakarsh Jain
+ * Author      : Manthan Hanchate
  * Date        : 19/11/2026
  */
 package org.example.QuantityMeasurement;
