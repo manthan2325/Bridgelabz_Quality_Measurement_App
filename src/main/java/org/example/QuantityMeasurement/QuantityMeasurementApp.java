@@ -1,42 +1,91 @@
 
 /*
  * Class Name  : QuantityMeasurementApp
- * Description : Demonstrates generic and legacy quantity operations.
+ * Description : Application entry point coordinating measurement operations.
  * Author      : Manthan Hanchate
  * Date        : 19/11/2026
  */
 package org.example.QuantityMeasurement;
 
+import org.example.QuantityMeasurement.controller.QuantityMeasurementController;
+import org.example.QuantityMeasurement.dto.QuantityDTO;
+import org.example.QuantityMeasurement.entity.QuantityMeasurementEntity;
+import org.example.QuantityMeasurement.repository.IQuantityMeasurementRepository;
+import org.example.QuantityMeasurement.repository.QuantityMeasurementCacheRepository;
+import org.example.QuantityMeasurement.service.IQuantityMeasurementService;
+import org.example.QuantityMeasurement.service.QuantityMeasurementServiceImpl;
+
+import java.util.List;
 import java.util.Objects;
 
 public class QuantityMeasurementApp {
 
-    // UC10: Generic demonstration methods
+    private final QuantityMeasurementController controller;
 
+    // Initializes repository, service, and controller.
+    public QuantityMeasurementApp() {
+        IQuantityMeasurementRepository repository =
+                QuantityMeasurementCacheRepository.getInstance();
+
+        IQuantityMeasurementService service =
+                new QuantityMeasurementServiceImpl(repository);
+
+        this.controller = new QuantityMeasurementController(service);
+    }
+
+    // Allows controller injection for testing.
+    public QuantityMeasurementApp(QuantityMeasurementController controller) {
+        this.controller = Objects.requireNonNull(
+                controller, "Controller cannot be null");
+    }
+
+    // UC15: Delegates conversion requests to the controller.
+    public QuantityMeasurementEntity convert(
+            QuantityDTO source, String targetUnit) {
+        return controller.convert(source, targetUnit);
+    }
+
+    // UC15: Delegates comparison requests to the controller.
+    public QuantityMeasurementEntity compare(
+            QuantityDTO first, QuantityDTO second) {
+        return controller.compare(first, second);
+    }
+
+    // UC15: Delegates arithmetic requests to the controller.
+    public QuantityMeasurementEntity calculate(
+            QuantityDTO first, QuantityDTO second, String operation) {
+        return controller.calculate(first, second, operation);
+    }
+
+    // UC15: Retrieves all stored measurement records.
+    public List<QuantityMeasurementEntity> getAllMeasurements() {
+        return controller.getAllMeasurements();
+    }
+
+    // UC15: Retrieves a measurement record by ID.
+    public QuantityMeasurementEntity getMeasurementById(String id) {
+        return controller.getMeasurementById(id);
+    }
+
+    // UC10: Generic equality demonstration.
     public static boolean demonstrateEquality(
-            Quantity<?> quantity1,
-            Quantity<?> quantity2) {
-
+            Quantity<?> quantity1, Quantity<?> quantity2) {
         return quantity1.equals(quantity2);
     }
 
+    // UC10: Generic conversion demonstration.
     public static <U extends IMeasurable> Quantity<U> demonstrateConversion(
-            Quantity<U> quantity,
-            U targetUnit) {
-
+            Quantity<U> quantity, U targetUnit) {
         return quantity.convertTo(targetUnit);
     }
 
+    // UC10: Generic addition demonstration.
     public static <U extends IMeasurable> Quantity<U> demonstrateAddition(
-            Quantity<U> quantity1,
-            Quantity<U> quantity2,
-            U targetUnit) {
-
+            Quantity<U> quantity1, Quantity<U> quantity2, U targetUnit) {
         return quantity1.add(quantity2, targetUnit);
     }
 
-    // UC1 and UC2: Legacy equality methods
-
+    // UC1 and UC2: Legacy equality methods.
     public static boolean areFeetEqual(double value1, double value2) {
         return Double.compare(value1, value2) == 0;
     }
@@ -54,35 +103,26 @@ public class QuantityMeasurementApp {
         ) == 0;
     }
 
-    // UC5: Legacy length conversion and comparison methods
-
+    // UC5: Legacy length conversion and comparison methods.
     public static double demonstrateLengthConversion(
-            double value,
-            LengthUnit sourceUnit,
-            LengthUnit targetUnit) {
-
+            double value, LengthUnit sourceUnit, LengthUnit targetUnit) {
         return QuantityLength.convert(value, sourceUnit, targetUnit);
     }
 
     public static QuantityLength demonstrateLengthConversion(
-            QuantityLength quantity,
-            LengthUnit targetUnit) {
-
+            QuantityLength quantity, LengthUnit targetUnit) {
         return quantity.convertTo(targetUnit);
     }
 
     public static boolean demonstrateLengthComparison(
-            double value1,
-            LengthUnit unit1,
-            double value2,
-            LengthUnit unit2) {
+            double value1, LengthUnit unit1,
+            double value2, LengthUnit unit2) {
 
         return new QuantityLength(value1, unit1)
                 .equals(new QuantityLength(value2, unit2));
     }
 
-    // UC1: Legacy Feet class
-
+    // UC1: Legacy Feet class.
     public static class Feet {
 
         private final double value;
@@ -106,8 +146,7 @@ public class QuantityMeasurementApp {
         }
     }
 
-    // UC2: Legacy Inches class
-
+    // UC2: Legacy Inches class.
     public static class Inches {
 
         private final double value;
@@ -131,7 +170,27 @@ public class QuantityMeasurementApp {
         }
     }
 
+    // UC10: Generic subtraction demonstration.
+    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.subtract(quantity2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1, Quantity<U> quantity2, U targetUnit) {
+        return quantity1.subtract(quantity2, targetUnit);
+    }
+
+    // UC12: Generic division demonstration.
+    public static <U extends IMeasurable> double demonstrateDivision(
+            Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.divide(quantity2);
+    }
+
+    // Application entry point.
     public static void main(String[] args) {
+
+        QuantityMeasurementApp app = new QuantityMeasurementApp();
 
         Quantity<LengthUnit> feet =
                 new Quantity<>(1.0, LengthUnit.FEET);
@@ -159,19 +218,16 @@ public class QuantityMeasurementApp {
                 + demonstrateConversion(kilogram, WeightUnit.GRAM));
         System.out.println("Addition: "
                 + demonstrateAddition(kilogram, grams, WeightUnit.KILOGRAM));
-    }
-    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
-            Quantity<U> quantity1, Quantity<U> quantity2) {
-        return quantity1.subtract(quantity2);
-    }
 
-    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
-            Quantity<U> quantity1, Quantity<U> quantity2, U targetUnit) {
-        return quantity1.subtract(quantity2, targetUnit);
-    }
+        // UC15: Demonstrates controller-service-repository flow.
+        System.out.println("\nUC15 Application Layer:");
 
-    public static <U extends IMeasurable> double demonstrateDivision(
-            Quantity<U> quantity1, Quantity<U> quantity2) {
-        return quantity1.divide(quantity2);
+        QuantityMeasurementEntity conversion =
+                app.convert(new QuantityDTO(1.0, "FEET"), "INCHES");
+
+        System.out.println("Conversion Result: " + conversion);
+
+        System.out.println("Stored Records: "
+                + app.getAllMeasurements().size());
     }
 }
