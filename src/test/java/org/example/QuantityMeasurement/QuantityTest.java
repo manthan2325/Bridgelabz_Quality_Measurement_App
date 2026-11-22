@@ -387,5 +387,203 @@ class QuantityTest {
                         litre, millilitre, VolumeUnit.LITRE).getValue(),
                 0.000001);
     }
+    @Test
+    void testSubtractionSameUnit() {
+        Quantity<LengthUnit> result =
+                new Quantity<>(10.0, LengthUnit.FEET)
+                        .subtract(new Quantity<>(4.0, LengthUnit.FEET));
 
+        assertEquals(6.0, result.getValue(), 0.000001);
+        assertEquals(LengthUnit.FEET, result.getUnit());
+    }
+
+    @Test
+    void testSubtractionDifferentUnits() {
+        Quantity<LengthUnit> result =
+                new Quantity<>(1.0, LengthUnit.FEET)
+                        .subtract(new Quantity<>(6.0, LengthUnit.INCHES));
+
+        assertEquals(0.5, result.getValue(), 0.000001);
+    }
+
+    @Test
+    void testSubtractionWithExplicitTargetUnit() {
+        Quantity<LengthUnit> result =
+                new Quantity<>(1.0, LengthUnit.FEET)
+                        .subtract(
+                                new Quantity<>(6.0, LengthUnit.INCHES),
+                                LengthUnit.INCHES
+                        );
+
+        assertEquals(6.0, result.getValue(), 0.000001);
+        assertEquals(LengthUnit.INCHES, result.getUnit());
+    }
+
+    @Test
+    void testSubtractionNegativeResult() {
+        Quantity<WeightUnit> result =
+                new Quantity<>(2.0, WeightUnit.KILOGRAM)
+                        .subtract(new Quantity<>(5.0, WeightUnit.KILOGRAM));
+
+        assertEquals(-3.0, result.getValue(), 0.000001);
+    }
+
+    @Test
+    void testSubtractionZeroResult() {
+        Quantity<VolumeUnit> result =
+                new Quantity<>(1.0, VolumeUnit.LITRE)
+                        .subtract(new Quantity<>(1000.0, VolumeUnit.MILLILITRE));
+
+        assertEquals(0.0, result.getValue(), 0.000001);
+    }
+
+    @Test
+    void testSubtractionPreservesSmallPrecision() {
+        Quantity<VolumeUnit> result =
+                new Quantity<>(0.001, VolumeUnit.LITRE)
+                        .subtract(new Quantity<>(0.0005, VolumeUnit.LITRE));
+
+        assertEquals(0.0005, result.getValue(), 0.000000001);
+    }
+
+    @Test
+    void testSubtractionNullOther() {
+        Quantity<LengthUnit> quantity =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> quantity.subtract(null)
+        );
+    }
+
+    @Test
+    void testSubtractionNullTargetUnit() {
+        Quantity<LengthUnit> quantity =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> quantity.subtract(
+                        new Quantity<>(2.0, LengthUnit.FEET),
+                        null
+                )
+        );
+    }
+
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    void testSubtractionCrossCategory() {
+        Quantity length = new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity weight = new Quantity<>(5.0, WeightUnit.KILOGRAM);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> length.subtract(weight)
+        );
+    }
+
+    @Test
+    void testSubtractionDoesNotModifyOriginalQuantities() {
+        Quantity<LengthUnit> first =
+                new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity<LengthUnit> second =
+                new Quantity<>(4.0, LengthUnit.FEET);
+
+        first.subtract(second);
+
+        assertEquals(10.0, first.getValue());
+        assertEquals(4.0, second.getValue());
+    }
+    @Test
+    void testDivisionSameUnit() {
+        double result =
+                new Quantity<>(10.0, LengthUnit.FEET)
+                        .divide(new Quantity<>(2.0, LengthUnit.FEET));
+
+        assertEquals(5.0, result, 0.000001);
+    }
+
+    @Test
+    void testDivisionDifferentUnits() {
+        double result =
+                new Quantity<>(1.0, LengthUnit.FEET)
+                        .divide(new Quantity<>(6.0, LengthUnit.INCHES));
+
+        assertEquals(2.0, result, 0.000001);
+    }
+
+    @Test
+    void testDivisionRatioOne() {
+        double result =
+                new Quantity<>(1.0, WeightUnit.KILOGRAM)
+                        .divide(new Quantity<>(1000.0, WeightUnit.GRAM));
+
+        assertEquals(1.0, result, 0.000001);
+    }
+
+    @Test
+    void testDivisionRatioLessThanOne() {
+        double result =
+                new Quantity<>(2.0, VolumeUnit.LITRE)
+                        .divide(new Quantity<>(4.0, VolumeUnit.LITRE));
+
+        assertEquals(0.5, result, 0.000001);
+    }
+
+    @Test
+    void testDivisionNegativeValues() {
+        double result =
+                new Quantity<>(-10.0, LengthUnit.FEET)
+                        .divide(new Quantity<>(2.0, LengthUnit.FEET));
+
+        assertEquals(-5.0, result, 0.000001);
+    }
+
+    @Test
+    void testDivisionByZero() {
+        Quantity<LengthUnit> quantity =
+                new Quantity<>(10.0, LengthUnit.FEET);
+
+        assertThrows(
+                ArithmeticException.class,
+                () -> quantity.divide(new Quantity<>(0.0, LengthUnit.INCHES))
+        );
+    }
+
+    @Test
+    void testDivisionNullOther() {
+        Quantity<WeightUnit> quantity =
+                new Quantity<>(10.0, WeightUnit.KILOGRAM);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> quantity.divide(null)
+        );
+    }
+
+    @Test
+    @SuppressWarnings({"rawtypes", "unchecked"})
+    void testDivisionCrossCategory() {
+        Quantity length = new Quantity<>(10.0, LengthUnit.FEET);
+        Quantity weight = new Quantity<>(5.0, WeightUnit.KILOGRAM);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> length.divide(weight)
+        );
+    }
+
+    @Test
+    void testDivisionDoesNotModifyOriginalQuantities() {
+        Quantity<VolumeUnit> first =
+                new Quantity<>(10.0, VolumeUnit.LITRE);
+        Quantity<VolumeUnit> second =
+                new Quantity<>(2.0, VolumeUnit.LITRE);
+
+        first.divide(second);
+
+        assertEquals(10.0, first.getValue());
+        assertEquals(2.0, second.getValue());
+    }
 }

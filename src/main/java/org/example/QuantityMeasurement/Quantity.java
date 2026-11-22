@@ -3,7 +3,7 @@
  * Class Name  : Quantity
  * Description : Generic measurement class supporting equality,
  *               conversion, and addition for different unit categories.
- * Author      : Manthan Hanchate
+ * Author      : Utakarsh Jain
  * Date        : 19/11/2026
  */
 package org.example.QuantityMeasurement;
@@ -86,6 +86,72 @@ public class Quantity<U extends IMeasurable> {
 
         return new Quantity<>(result, targetUnit);
     }
+
+    public Quantity<U> subtract(Quantity<U> other) {
+        return subtract(other, this.unit);
+    }
+
+    public Quantity<U> subtract(Quantity<U> other, U targetUnit) {
+        validateCompatible(other, targetUnit);
+
+        double firstBaseValue = this.convertToBaseUnit();
+        double secondBaseValue = other.convertToBaseUnit();
+
+        double difference = firstBaseValue - secondBaseValue;
+
+        if (!Double.isFinite(difference)) {
+            throw new ArithmeticException("Subtraction result is out of range");
+        }
+
+        double result = targetUnit.convertFromBaseUnit(difference);
+
+        if (!Double.isFinite(result)) {
+            throw new ArithmeticException("Converted subtraction result is out of range");
+        }
+
+        return new Quantity<>(result, targetUnit);
+    }
+
+    public double divide(Quantity<U> other) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other quantity cannot be null");
+        }
+
+        if (unit.getClass() != other.unit.getClass()) {
+            throw new IllegalArgumentException("Incompatible measurement categories");
+        }
+
+        double numerator = this.convertToBaseUnit();
+        double denominator = other.convertToBaseUnit();
+
+        if (denominator == 0.0) {
+            throw new ArithmeticException("Division by zero is not allowed");
+        }
+
+        double result = numerator / denominator;
+
+        if (!Double.isFinite(result)) {
+            throw new ArithmeticException("Division result is out of range");
+        }
+
+        return result;
+    }
+
+    private void validateCompatible(Quantity<U> other, U targetUnit) {
+        if (other == null) {
+            throw new IllegalArgumentException("Other quantity cannot be null");
+        }
+
+        if (targetUnit == null) {
+            throw new IllegalArgumentException("Target unit cannot be null");
+        }
+
+        if (unit.getClass() != other.unit.getClass()
+                || unit.getClass() != targetUnit.getClass()) {
+            throw new IllegalArgumentException("Incompatible measurement categories");
+        }
+    }
+
 
     @Override
     public boolean equals(Object obj) {

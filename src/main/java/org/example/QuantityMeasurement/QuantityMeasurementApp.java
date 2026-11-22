@@ -160,4 +160,18 @@ public class QuantityMeasurementApp {
         System.out.println("Addition: "
                 + demonstrateAddition(kilogram, grams, WeightUnit.KILOGRAM));
     }
+    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.subtract(quantity2);
+    }
+
+    public static <U extends IMeasurable> Quantity<U> demonstrateSubtraction(
+            Quantity<U> quantity1, Quantity<U> quantity2, U targetUnit) {
+        return quantity1.subtract(quantity2, targetUnit);
+    }
+
+    public static <U extends IMeasurable> double demonstrateDivision(
+            Quantity<U> quantity1, Quantity<U> quantity2) {
+        return quantity1.divide(quantity2);
+    }
 }
